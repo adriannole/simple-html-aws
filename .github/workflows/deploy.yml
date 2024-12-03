@@ -51,5 +51,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no ec2-user@100.28.127.104 "sudo systemctl restart httpd"
 
           # Instancia 3
-          scp -o StrictHostKeyChecking=no -r ./index.html ec2-user@<DIRECCION_PUBLICA_INSTANCIA_3>:/var/www/html
+          scp -o StrictHostKeyChecking=no -r ./index.html ec2-user@3.239.193.88:/var/www/html
           ssh -o StrictHostKeyChecking=no ec2-user@3.234.220.115 "sudo systemctl restart httpd"
