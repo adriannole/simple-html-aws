@@ -23,8 +23,8 @@ jobs:
 
       - name: Deploy to QA instance
         run: |
-          scp -o StrictHostKeyChecking=no -r ./index.html ec2-user@3.84.201.212:/var/www/html
-          ssh -o StrictHostKeyChecking=no ec2-user@3.84.201.212 "sudo systemctl restart httpd"
+          scp -o StrictHostKeyChecking=no -r ./index.html ec2-user@52.55.80.18:/var/www/html
+          ssh -o StrictHostKeyChecking=no ec2-user@52.55.80.18 "sudo systemctl restart httpd"
 
   deploy-production:
     if: github.ref == 'refs/heads/main'
@@ -43,13 +43,13 @@ jobs:
       - name: Deploy to production instances
         run: |
           # Instancia 1
-          scp -o StrictHostKeyChecking=no -r ./index.html ec2-user@3.81.148.12:/var/www/html
-          ssh -o StrictHostKeyChecking=no ec2-user@3.81.148.12 "sudo systemctl restart httpd"
+          scp -o StrictHostKeyChecking=no -r ./index.html ec2-user@34.238.172.202:/var/www/html
+          ssh -o StrictHostKeyChecking=no ec2-user@34.238.172.202 "sudo systemctl restart httpd"
 
           # Instancia 2
           scp -o StrictHostKeyChecking=no -r ./index.html ec2-user@100.28.127.104:/var/www/html
           ssh -o StrictHostKeyChecking=no ec2-user@100.28.127.104 "sudo systemctl restart httpd"
 
           # Instancia 3
-          scp -o StrictHostKeyChecking=no -r ./index.html ec2-user@<DIRECCION_PUBLICA_INSTANCIA_3>:/var/www/html
-          ssh -o StrictHostKeyChecking=no ec2-user@3.234.220.115 "sudo systemctl restart httpd"
+          scp -o StrictHostKeyChecking=no -r ./index.html ec2-user@3.239.193.88:/var/www/html
+          ssh -o StrictHostKeyChecking=no ec2-user@3.239.193.88 "sudo systemctl restart httpd"
