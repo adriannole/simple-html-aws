@@ -26,28 +26,21 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@52.201.212.184 "echo 'SSH connection successful'"
 
-      - name: Deploy to QA
+      - name: Deploy to QA (All Instances)
         if: github.ref == 'refs/heads/qa'
         run: |
           # Remove previous files (with sudo)
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@52.201.212.184 "sudo rm -rf /var/www/html/*"
-          
-          # Copiar el archivo con SCP
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa index.html ec2-user@52.201.212.184:/tmp/
+          for host in 52.201.212.184 52.91.181.82 44.211.241.2 3.227.22.30; do
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@$host "sudo rm -rf /var/www/html/*"
+            scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa index.html ec2-user@$host:/tmp/
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@$host "sudo mv /tmp/index.html /var/www/html/"
+          done
 
-          # Mover el archivo a la carpeta protegida /var/www/html/ usando sudo
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@52.201.212.184 "sudo mv /tmp/index.html /var/www/html/"
-
-      - name: Deploy to Production
+      - name: Deploy to Production (Main Branch)
         if: github.ref == 'refs/heads/main'
         run: |
           for host in 52.91.181.82 44.211.241.2 3.227.22.30; do
-            # Eliminar archivos previos en producción
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@$host "sudo rm -rf /var/www/html/*"
-            
-            # Copiar el archivo con SCP
             scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa index.html ec2-user@$host:/tmp/
-
-            # Mover el archivo a la carpeta protegida /var/www/html/ usando sudo
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@$host "sudo mv /tmp/index.html /var/www/html/"
           done
